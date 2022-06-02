@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="F_LogExecutionInfo" Id="{7fd1fde0-f52a-4d7e-8cab-eaf20793d487}" SpecialFunc="None">
+    <Declaration><![CDATA[//https://infosys.beckhoff.com/content/1033/te1400_tc3_target_matlab/11335410315.html?id=3885529162355206359
+FUNCTION F_LogExecutionInfo : HRESULT
+VAR_INPUT
+	ExecutionInfo 				:ST_ExecutionInfo;	
+END_VAR
+VAR	
+	sFormatString				:STRING(255);
+	sOutputString				:STRING(255);
+	fbFormat					:FB_FormatString2;
+ 	sOut       					:T_MaxString;	
+    bError     					:BOOL;
+    nErrID     					:UDINT;	
+	icnt						:UDINT;
+	
+	sTemp						:T_MaxString;
+	sTemp2						:T_MaxString;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+sTemp:=ExecutionInfo.stActException.sTmxName;
+
+IF ExecutionInfo.stActException.bDumpCreated THEN
+	sTemp2:='TRUE';
+ELSE
+	sTemp2:='FALSE';
+END_IF
+
+sFormatString:=	'Exception:0x%X | %s Version:%d | Instruction Addr:0x%X | Return Addr:0x%X | Dump Created:%s | Cycle Count:%d | Exception Count:%d';			 
+				 
+		fbFormat(
+			pFormatString:=ADR(sFormatString) , 
+			arg1 := F_DINT	( ExecutionInfo.stActException.nExceptionCode), 	//Code of the exception.
+			arg2 := F_STRING( sTemp ), 											//Name of the tmx driver that threw the exception.                                    
+			arg3 := F_UDINT	( ExecutionInfo.stActException.nTmxVersion),        //Version of the tmx driver that threw the exception.
+			arg4 := F_UDINT	( ExecutionInfo.stActException.nInstructionAddr),	//Relative address in memory; location where the exception occurred.
+			arg5 := F_UDINT	( ExecutionInfo.stActException.nReturnAddr),     	//Return addresses
+			arg6 := F_STRING( sTemp2),		  									//TRUE if a dump file was created for the exception.
+			arg7 := F_ULINT	( ExecutionInfo.nCycleCount ),  					//Current cycle count (independent of an exception)         
+			arg8 := F_ULINT	( ExecutionInfo.nExceptionCount ),					//Number of exceptions that have occurred so far          
+			pDstString:=ADR(sOutputString) , 
+			nDstSize:=SIZEOF(sOutputString) , 
+			bError=>bError , 
+			nErrId=>nErrID );
+			
+	  IF NOT bError THEN
+		F_LogExecutionInfo:=ADSLOGSTR( msgCtrlMask := ADSLOG_MSGTYPE_ERROR, msgFmtStr := sOutputString, strArg := '');		  
+	  ELSE
+		F_LogExecutionInfo:=ADSLOGSTR( msgCtrlMask := ADSLOG_MSGTYPE_ERROR, msgFmtStr := 'Error %s formating string', strArg :=TO_STRING(nErrID) );
+	  END_IF
+			
+
+(*
+With the InstructionAddr it is possible to judge if the exception with the given ExceptionCode always occurs at the same place in the source code. 
+If the InstructionAddr is the same for repeating exceptions, it always occurs at the same point in the code. 
+Via ReturnAddr you can see where the calls came from that led to the location of the exception. So you can judge if the call that leads to the exception always takes the same call path. 
+If the code is called from outside the Tmx driver, there is a 0 in ReturnAddr.
+
+*)]]></ST>
+    </Implementation>
+    <LineIds Name="F_LogExecutionInfo">
+      <LineId Id="33" Count="1" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="72" Count="1" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="39" Count="9" />
+      <LineId Id="51" Count="2" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="62" Count="2" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="81" Count="2" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="78" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
