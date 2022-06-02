@@ -20,7 +20,7 @@ Should you have any questions regarding the provided sample code, please contact
 
 # Further Information
 
-Further Information on Exception handling in TE1400 can be found at the [Beckhoff Infosys](https://infosys.beckhof.com) under the [REPO TOPIC](https://infosys.beckhoff.com/content/1033/te1400_tc3_target_matlab/11335410315.html?id=3885529162355206359)
+Further Information on Exception handling in TE1400 can be found at the [Beckhoff Infosys](https://infosys.beckhof.com) under the [TE1400 -> From version 2.x.xxxx.x -> Application of modules in TwinCAT -> Exception handling](https://infosys.beckhoff.com/content/1033/te1400_tc3_target_matlab/11335410315.html?id=3885529162355206359)
 
 ## Requirements
 
