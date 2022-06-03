@@ -1,0 +1,53 @@
+%implements "chartSource" "C"
+%function ChartConfig(block, system) void
+  %createrecord chartConfiguration { ...
+          executeAtInitialization  0 ...
+  }
+  %return chartConfiguration
+%endfunction
+%function ChartDataMap(block, system) void
+  %createrecord ChartDataElements {\
+    NumChartData   5 \
+    ChartDataDefaults {\
+      RecordType   "ChartData"\
+      Dimensions   []\
+      IsTestPoint  0\
+    }\
+    ChartData {\
+      Name         "Counter"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ExceptionGenerator:1:73-80"\
+    }\
+    ChartData {\
+      Name         "a"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ExceptionGenerator:1:81-82"\
+    }\
+    ChartData {\
+      Name         "b"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ExceptionGenerator:1:83-84"\
+    }\
+    ChartData {\
+      Name         "fPosInf"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ExceptionGenerator:1:85-92"\
+    }\
+    ChartData {\
+      Name         "fNegInf"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "ExceptionGenerator:1:93-100"\
+    }\
+  }
+  %return ChartDataElements
+%endfunction

@@ -1,0 +1,5 @@
+Repository Tool
+Copyright c 1994-2020 by 3S-Smart Software Solutions GmbH. All rights reserved.
+
+Arguments: --profile="TwinCAT PLC Control" --convertLib "C:\TwinCAT\3.1\Repository\TE140x Module Vendor\ExceptionGenerator\0.0.0.2\ExceptionGenerator.tml" "C:\TwinCAT\3.1\Repository\TE140x Module Vendor\ExceptionGenerator\0.0.0.2\ExceptionGenerator.library"
+

@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="MAIN" Id="{31d28178-3bb0-42c2-ba1e-36c49cc9c860}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	//Dynamic creation of TcCOM object
+	//In this case, the required memory for the TcCOM is obtained from the router memory
+	stInitfb					:ST_FB_ExceptionGenerator_TcCOM_InitStruct := (
+									nOid						:= OTCID_CreateNewId,
+									nTaskOid 					:= 16#02010030, //The TaskOid of the PLC task in which the wrapper is called must be specified
+									nTaskSortOrder				:= 0,
+									eTraceLevelMax  			:= TcTraceLevel.tlAlways,
+									eModuleCaller 				:= E_MODULECALLER.Module, //The ModuleCaller must also be set to modules here
+									eCallerVerification 		:= E_CallerVerification.Default,
+									eStepSizeAdaptation 		:= E_StepSizeAdaptation.RequireMatchingTaskCycleTime,
+									eExecutionSequence 			:= E_ExecutionSequence1.UpdateBeforeOutputMapping,
+									bExecute  					:= TRUE,									
+									eAccessLockState 			:= TCOM_STATE.TCOM_STATE_OP,
+									eInitExceptionHandling 		:= E_FpExcptCtrlSet.LogCatchAndDump,
+									eUpdateExceptionHandling 	:= E_FpExcptCtrlSet.LogCatchAndDump
+									);	
+									
+    
+	fbExceptionGenerator 			:FB_ExceptionGenerator_TcCOM_InitStruct(stInitfb);
+	
+	//Internal data area acsess
+	xReadInternalData				: BOOL;
+	xWriteInternalData				: BOOL;
+	stExceptionGeneratorBlockIO  	: ST_DW_ExceptionGenerator_T;
+	pStExceptionGeneratorBlockIO 	: POINTER TO ST_DW_ExceptionGenerator_T;
+	hr 								: HRESULT;
+
+	//Input and outputs from the model
+	Inputs						:ST_ExtU_ExceptionGenerator_T;	//Set one of the inputs to true, to trigger an exception.
+	Outputs						:ST_ExtY_ExceptionGenerator_T;
+	
+	
+	//Execution info
+	ExecutionInfo 				:ST_ExecutionInfo;
+	PrevExecutionInfo			:ST_ExecutionInfo;
+
+	icnt						:UDINT;
+	
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[icnt:=icnt+1;
+
+fbExceptionGenerator.bExecute; //Controls the execution of the model. 
+
+IF 	fbExceptionGenerator.bExecute 		= TRUE 							AND
+	fbExceptionGenerator.bInitialized 	= TRUE 							AND 
+	fbExceptionGenerator.nObjectState 	= TCOM_STATE.TCOM_STATE_OP 
+	
+THEN
+
+    // call the module
+	fbExceptionGenerator(stExceptionGenerator_U:=Inputs , stExceptionGenerator_Y=>Outputs , stExecutionInfo=>ExecutionInfo );
+    
+    // handle exceptions
+    IF ExecutionInfo.stActException.nExceptionCode <> 0 THEN
+       // collect exception information
+	   PrevExecutionInfo:=ExecutionInfo;
+	   
+	   //Write log message
+	   F_LogExecutionInfo(ExecutionInfo:=ExecutionInfo);
+	   
+	   //Reset input data to the model - optional, but maybe a good idea to clear out any data that might have triggered the exception. 
+	   //Using the TwinCAT analytics logger to cyclically log data over longer periods of time ,could be helpful in tracing the source conditions that lead to a problem..
+	   //See additinal example bellow for acsessing internal data of the model.
+        MEMSET(ADR(Inputs),0,SIZEOF(Inputs));
+		
+       // reinit TcCOM
+	   //Calling the Reinit method, doesnt reset internal variables to there intial values
+       fbExceptionGenerator.Reinit(stReInit :=stInitfb ); 
+    END_IF
+    
+ END_IF
+ 
+ 
+ 
+//Use with care. This shows how to acsess the internal variables ("DW" data area) of the model.
+//https://infosys.beckhoff.com/content/1033/te1400_tc3_target_matlab/11335783307.html?id=3832417987195186788
+//Might be helpful, if you for example want to re-initialize all internal variables to a know good state.
+
+// ipADI.GetImagePtr(size := , offs := adi_x := , ppData := )
+// Validate the area number "adi_x" , and offset "offs" by adding an instance of the model under TcCOM objects -> "ExceptionGenerator" -> Data Area -> "ExceptionGenerator_DW"
+
+//Read data via ADI Interface
+IF xReadInternalData THEN
+	xReadInternalData:=FALSE;
+	
+	//Get a pointer to the data area
+	hr := fbExceptionGenerator.ipADI.GetImagePtr(size := SIZEOF(stExceptionGeneratorBlockIO), offs := 0, adi_x := 2, ppData := ADR(pStExceptionGeneratorBlockIO));
+	IF hr = 0 THEN
+	   // copy "DW" data area to a local variable
+	   MEMCPY(destAddr:=ADR(stExceptionGeneratorBlockIO),srcAddr:=pStExceptionGeneratorBlockIO,n:=SIZEOF(stExceptionGeneratorBlockIO));
+	   // always release the pointer!
+	   fbExceptionGenerator.ipADI.ReleaseImagePtr(pData := pStExceptionGeneratorBlockIO);
+	END_IF;
+		
+END_IF
+
+
+//Write data via ADI Interface
+IF xWriteInternalData THEN
+	xWriteInternalData:=FALSE;
+	
+	//Get a pointer to the data area
+	hr := fbExceptionGenerator.ipADI.GetImagePtr(size := SIZEOF(stExceptionGeneratorBlockIO), offs := 0, adi_x := 2, ppData := ADR(pStExceptionGeneratorBlockIO));
+	IF hr = 0 THEN
+	   //Write local data to dara area "DW" of model
+	   MEMCPY(destAddr:=pStExceptionGeneratorBlockIO,srcAddr:=ADR(stExceptionGeneratorBlockIO),n:=SIZEOF(stExceptionGeneratorBlockIO));
+	   // always release the pointer!
+	   fbExceptionGenerator.ipADI.ReleaseImagePtr(pData := pStExceptionGeneratorBlockIO);
+	END_IF;	
+END_IF
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="295" Count="1" />
+      <LineId Id="248" Count="1" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="92" Count="1" />
+      <LineId Id="95" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="54" Count="4" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="244" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="247" Count="0" />
+      <LineId Id="301" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="304" Count="0" />
+      <LineId Id="62" Count="2" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="260" Count="1" />
+      <LineId Id="297" Count="1" />
+      <LineId Id="306" Count="0" />
+      <LineId Id="299" Count="0" />
+      <LineId Id="356" Count="0" />
+      <LineId Id="350" Count="0" />
+      <LineId Id="349" Count="0" />
+      <LineId Id="354" Count="0" />
+      <LineId Id="351" Count="0" />
+      <LineId Id="262" Count="1" />
+      <LineId Id="355" Count="0" />
+      <LineId Id="266" Count="0" />
+      <LineId Id="268" Count="5" />
+      <LineId Id="265" Count="0" />
+      <LineId Id="275" Count="0" />
+      <LineId Id="264" Count="0" />
+      <LineId Id="278" Count="0" />
+      <LineId Id="353" Count="0" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="277" Count="0" />
+      <LineId Id="280" Count="0" />
+      <LineId Id="291" Count="0" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="284" Count="5" />
+      <LineId Id="283" Count="0" />
+      <LineId Id="281" Count="0" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="45" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

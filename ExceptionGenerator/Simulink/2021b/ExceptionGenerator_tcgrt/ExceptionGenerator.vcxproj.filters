@@ -1,0 +1,186 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<Filter Include="TwinCAT">
+			<UniqueIdentifier>{FAD747B0-8F88-8B36-E313-8A1FBF79B2A3}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="TwinCAT\ClassFactory">
+			<UniqueIdentifier>{EC379798-599D-19B1-60E7-235D72D99F85}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="TwinCAT\RT">
+			<UniqueIdentifier>{754DBF2B-6A46-C0F7-473A-86F4FEF80B9A}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="TwinCAT\OS">
+			<UniqueIdentifier>{17709CB3-6915-D5F4-6267-9BB065886E69}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="TwinCAT\UM">
+			<UniqueIdentifier>{EB1C7143-E328-10F5-C278-4F59C43BB2EF}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="TwinCAT\Classes">
+			<UniqueIdentifier>{9B78A43C-DAE0-BC7D-5CBB-CFD6B6BE3829}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="TwinCAT\Classes\ExceptionGenerator">
+			<UniqueIdentifier>{AD7F3B2D-346A-4B77-FD10-EBD859911445}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="Resource Files">
+			<UniqueIdentifier>{30303DE3-5594-859E-B4C8-EB4A26FB92F0}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="Simulink">
+			<UniqueIdentifier>{AA2B8B95-92FE-16AF-8517-387C6D9C8E77}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="Simulink\ExceptionGenerator">
+			<UniqueIdentifier>{5823B087-4798-5B3A-7607-4657F21A6A72}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="Simulink\ExceptionGenerator\Sources">
+			<UniqueIdentifier>{AFF2EC68-3D5C-0C0B-8C19-260FE5F16D4E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="Simulink\ExceptionGenerator\Includes">
+			<UniqueIdentifier>{A6EE1DC2-567B-8D31-23F7-261A7D9580E1}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="xml">
+			<UniqueIdentifier>{2D22E2B0-E2CD-BBCA-A64B-51C4CB5D9615}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="TMx">
+			<UniqueIdentifier>{5297439A-DA58-0C91-61B4-BD5DCFFE14EE}</UniqueIdentifier>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="TcPch.h">
+			<Filter>TwinCAT</Filter>
+		</ClInclude>
+		<ClInclude Include="ExceptionGeneratorServices.h">
+			<Filter>TwinCAT</Filter>
+		</ClInclude>
+		<ClInclude Include="ExceptionGeneratorDuts.h">
+			<Filter>TwinCAT</Filter>
+		</ClInclude>
+		<ClInclude Include="ExceptionGeneratorInterfaces.h">
+			<Filter>TwinCAT</Filter>
+		</ClInclude>
+		<ClInclude Include="ExceptionGeneratorClassFactory.h">
+			<Filter>TwinCAT\ClassFactory</Filter>
+		</ClInclude>
+		<ClInclude Include="ExceptionGeneratorDrv.h">
+			<Filter>TwinCAT\RT</Filter>
+		</ClInclude>
+		<ClInclude Include="ExceptionGeneratorCtrl.h">
+			<Filter>TwinCAT\UM</Filter>
+		</ClInclude>
+		<ClInclude Include="ExceptionGeneratorW32.h">
+			<Filter>TwinCAT\UM</Filter>
+		</ClInclude>
+		<ClInclude Include="ExceptionGeneratorW32Resource.h">
+			<Filter>TwinCAT\UM</Filter>
+		</ClInclude>
+		<ClInclude Include="TcComExceptionGenerator.h">
+			<Filter>TwinCAT\Classes\ExceptionGenerator</Filter>
+		</ClInclude>
+		<ClInclude Include="FbExceptionGenerator.h">
+			<Filter>TwinCAT\Classes\ExceptionGenerator</Filter>
+		</ClInclude>
+		<ClInclude Include="ExceptionGeneratorInternal.h">
+			<Filter>TwinCAT\Classes\ExceptionGenerator</Filter>
+		</ClInclude>
+		<ClInclude Include="FbTcComExceptionGenerator.h">
+			<Filter>TwinCAT\Classes\ExceptionGenerator</Filter>
+		</ClInclude>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtGetInf.h">
+			<Filter>Simulink\ExceptionGenerator\Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtGetNaN.h">
+			<Filter>Simulink\ExceptionGenerator\Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rt_nonfinite.h">
+			<Filter>Simulink\ExceptionGenerator\Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\ExceptionGenerator.h">
+			<Filter>Simulink\ExceptionGenerator\Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\ExceptionGenerator_private.h">
+			<Filter>Simulink\ExceptionGenerator\Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\ExceptionGenerator_types.h">
+			<Filter>Simulink\ExceptionGenerator\Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\multiword_types.h">
+			<Filter>Simulink\ExceptionGenerator\Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtmodel.h">
+			<Filter>Simulink\ExceptionGenerator\Includes</Filter>
+		</ClInclude>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtwtypes.h">
+			<Filter>Simulink\ExceptionGenerator\Includes</Filter>
+		</ClInclude>
+	</ItemGroup>
+	<ItemGroup>
+		<ClCompile Include="TcPch.cpp">
+			<Filter>TwinCAT</Filter>
+		</ClCompile>
+		<ClCompile Include="ExceptionGeneratorClassFactory.cpp">
+			<Filter>TwinCAT\ClassFactory</Filter>
+		</ClCompile>
+		<ClCompile Include="ExceptionGeneratorDrv.cpp">
+			<Filter>TwinCAT\RT</Filter>
+		</ClCompile>
+		<ClCompile Include="ExceptionGeneratorModulesMain.cpp">
+			<Filter>TwinCAT\OS</Filter>
+		</ClCompile>
+		<ClCompile Include="ExceptionGeneratorCtrl.cpp">
+			<Filter>TwinCAT\UM</Filter>
+		</ClCompile>
+		<ClCompile Include="ExceptionGeneratorW32.cpp">
+			<Filter>TwinCAT\UM</Filter>
+		</ClCompile>
+		<ClCompile Include="TcComExceptionGenerator.cpp">
+			<Filter>TwinCAT\Classes\ExceptionGenerator</Filter>
+		</ClCompile>
+		<ClCompile Include="FbExceptionGenerator.cpp">
+			<Filter>TwinCAT\Classes\ExceptionGenerator</Filter>
+		</ClCompile>
+		<ClCompile Include="FbTcComExceptionGenerator.cpp">
+			<Filter>TwinCAT\Classes\ExceptionGenerator</Filter>
+		</ClCompile>
+		<ClCompile Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\ExceptionGenerator.cpp">
+			<Filter>Simulink\ExceptionGenerator\Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtGetInf.cpp">
+			<Filter>Simulink\ExceptionGenerator\Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtGetNaN.cpp">
+			<Filter>Simulink\ExceptionGenerator\Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rt_nonfinite.cpp">
+			<Filter>Simulink\ExceptionGenerator\Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="$(Simulink_ExceptionGenerator_MATLAB_ROOT)\rtw\c\src\common\rt_cppclass_main.cpp">
+			<Filter>Simulink\ExceptionGenerator\Sources</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="ExceptionGeneratorW32.rc">
+			<Filter>TwinCAT\UM</Filter>
+		</ResourceCompile>
+		<ResourceCompile Include="ExceptionGenerator.rc">
+			<Filter>Resource Files</Filter>
+		</ResourceCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="ExceptionGeneratorArtifacts.props">
+			<Filter>ExceptionGenerator.vcxproj</Filter>
+		</None>
+		<None Include="ExceptionGeneratorW32.def">
+			<Filter>TwinCAT\UM</Filter>
+		</None>
+		<None Include="ExceptionGenerator_ModuleInfo.xml">
+			<Filter>TwinCAT\Classes\ExceptionGenerator</Filter>
+		</None>
+		<None Include="ExceptionGenerator.libcat.xml">
+			<Filter>xml</Filter>
+		</None>
+		<None Include="ExceptionGenerator.tmc">
+			<Filter>TMx</Filter>
+		</None>
+		<None Include="ExceptionGenerator.tml">
+			<Filter>TMx</Filter>
+		</None>
+	</ItemGroup>
+</Project>

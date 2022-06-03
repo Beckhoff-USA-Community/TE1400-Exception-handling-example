@@ -1,0 +1,20 @@
+<?xml version = "1.0" encoding = "utf-8" ?>
+<Project ToolsVersion = "4.0" xmlns = "http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup> <!-- Global -->
+		<ModuleGeneratorSdk>C:\TwinCAT\Functions\TE14xx-ToolsForMatlabAndSimulink\TE140x\SDK</ModuleGeneratorSdk>
+		<TE140xSdk>$(ModuleGeneratorSdk)</TE140xSdk>
+	</PropertyGroup>
+	<PropertyGroup> <!--Simulink_ExceptionGenerator-->
+		<Simulink_ExceptionGenerator_BUILD_DIR>C:\Users\MKlev\Documents\MATLAB\MyModles\ExceptionGenerator\Simulink\2021b\ExceptionGenerator_tcgrt\</Simulink_ExceptionGenerator_BUILD_DIR>
+		<Simulink_ExceptionGenerator_START_DIR>C:\Users\MKlev\Documents\MATLAB\MyModles\ExceptionGenerator\Simulink\2021b\ExceptionGenerator_tcgrt\\..</Simulink_ExceptionGenerator_START_DIR>
+		<Simulink_ExceptionGenerator_MATLAB_ROOT>C:\Program Files\MATLAB\R2021b</Simulink_ExceptionGenerator_MATLAB_ROOT>
+		<Simulink_ExceptionGenerator_INCDIR1>$(Simulink_ExceptionGenerator_START_DIR)</Simulink_ExceptionGenerator_INCDIR1>
+		<Simulink_ExceptionGenerator_INCDIR2>$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt</Simulink_ExceptionGenerator_INCDIR2>
+		<Simulink_ExceptionGenerator_INCDIR3>$(Simulink_ExceptionGenerator_MATLAB_ROOT)\extern\include</Simulink_ExceptionGenerator_INCDIR3>
+		<Simulink_ExceptionGenerator_INCDIR4>$(Simulink_ExceptionGenerator_MATLAB_ROOT)\simulink\include</Simulink_ExceptionGenerator_INCDIR4>
+		<Simulink_ExceptionGenerator_INCDIR5>$(Simulink_ExceptionGenerator_MATLAB_ROOT)\rtw\c\src</Simulink_ExceptionGenerator_INCDIR5>
+		<Simulink_ExceptionGenerator_INCDIR6>$(Simulink_ExceptionGenerator_MATLAB_ROOT)\rtw\c\src\ext_mode\common</Simulink_ExceptionGenerator_INCDIR6>
+		<Simulink_ExceptionGenerator_Definitions>MODEL=ExceptionGenerator;NUMST=1;NCSTATES=0;HAVESTDIO;RT;USE_RTMODEL;CLASSIC_INTERFACE=0;ALLOCATIONFCN=0;TID01EQ=0;MAT_FILE=0;ONESTEPFCN=1;TERMFCN=1;MULTI_INSTANCE_CODE=1;INTEGER_CODE=0;MT=0;BOOLEAN_T=bool;</Simulink_ExceptionGenerator_Definitions>
+		<Simulink_ExceptionGenerator_IncludeDir>$(Simulink_ExceptionGenerator_INCDIR1);$(Simulink_ExceptionGenerator_INCDIR2);$(Simulink_ExceptionGenerator_INCDIR3);$(Simulink_ExceptionGenerator_INCDIR4);$(Simulink_ExceptionGenerator_INCDIR5);$(Simulink_ExceptionGenerator_INCDIR6);</Simulink_ExceptionGenerator_IncludeDir>
+	</PropertyGroup>
+</Project>
