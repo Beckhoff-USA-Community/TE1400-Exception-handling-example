@@ -26,6 +26,6 @@ Further Information on Exception handling in TE1400 can be found at the [Beckhof
 
 - [TE1000 TwinCAT 3 Engineering](https://www.beckhoff.com/en-en/products/automation/twincat/te1xxx-twincat-3-engineering/te1000.html) version 3.1.4024.22 or higher
 - TwinCAT XAR version >= 3.1.4024.22
-- Beckhoff TwinCAT Tools for Matlab version >= 2.3.1.0 
+- Beckhoff TwinCAT Tools for Matlab version >= 2.4.1.0 
 - Matlab version >= 2019a
 - See setup notes from Exception handling [Exception handling](https://infosys.beckhoff.com/content/1033/te1400_tc3_target_matlab/11335410315.html?id=3885529162355206359)
