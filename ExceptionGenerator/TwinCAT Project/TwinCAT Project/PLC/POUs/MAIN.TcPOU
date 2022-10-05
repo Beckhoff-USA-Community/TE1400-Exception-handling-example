@@ -16,12 +16,15 @@ VAR
 									eExecutionSequence 			:= E_ExecutionSequence1.UpdateBeforeOutputMapping,
 									bExecute  					:= TRUE,									
 									eAccessLockState 			:= TCOM_STATE.TCOM_STATE_OP,
-									eInitExceptionHandling 		:= E_FpExcptCtrlSet.LogCatchAndDump,
-									eUpdateExceptionHandling 	:= E_FpExcptCtrlSet.LogCatchAndDump
+									eInitExceptionHandling 		:= E_FpExcptCtrlSet.ThrowExceptions,
+									eUpdateExceptionHandling 	:= E_FpExcptCtrlSetEx.LogCatchAndDump
 									);	
 									
     
 	fbExceptionGenerator 			:FB_ExceptionGenerator_TcCOM_InitStruct(stInitfb);
+	stBuildInfo						:ST_ModuleBuildInfo;
+	hrExecute						:HRESULT;
+	
 	
 	//Internal data area acsess
 	xReadInternalData				: BOOL;
@@ -31,15 +34,15 @@ VAR
 	hr 								: HRESULT;
 
 	//Input and outputs from the model
-	Inputs						:ST_ExtU_ExceptionGenerator_T;	//Set one of the inputs to true, to trigger an exception.
-	Outputs						:ST_ExtY_ExceptionGenerator_T;
-	
-	
-	//Execution info
-	ExecutionInfo 				:ST_ExecutionInfo;
-	PrevExecutionInfo			:ST_ExecutionInfo;
-
-	icnt						:UDINT;
+	Inputs							:ST_ExceptionGenerator_U_T;	//Set one of the inputs to true, to trigger an exception.
+	Outputs							:ST_ExceptionGenerator_Y_T;
+	                            	
+	                            	
+	//Execution info            	
+	ExecutionInfo 					:ST_ExecutionInfo;
+	PrevExecutionInfo				:ST_ExecutionInfo;
+                                	
+	icnt							:UDINT;
 	
 
 END_VAR
@@ -51,20 +54,22 @@ fbExceptionGenerator.bExecute; //Controls the execution of the model.
 
 IF 	fbExceptionGenerator.bExecute 		= TRUE 							AND
 	fbExceptionGenerator.bInitialized 	= TRUE 							AND 
-	fbExceptionGenerator.nObjectState 	= TCOM_STATE.TCOM_STATE_OP 
+	fbExceptionGenerator.eObjectState 	= TCOM_STATE.TCOM_STATE_OP 
 	
 THEN
 
     // call the module
 	fbExceptionGenerator(stExceptionGenerator_U:=Inputs , stExceptionGenerator_Y=>Outputs , stExecutionInfo=>ExecutionInfo );
     
+	
     // handle exceptions
     IF ExecutionInfo.stActException.nExceptionCode <> 0 THEN
        // collect exception information
 	   PrevExecutionInfo:=ExecutionInfo;
 	   
 	   //Write log message
-	   F_LogExecutionInfo(ExecutionInfo:=ExecutionInfo);
+	   stBuildInfo:=fbExceptionGenerator.stModuleBuildInfo;
+	   F_LogExecutionInfo(ExecutionInfo:=ExecutionInfo,ModuleBuildInfo:=stBuildInfo);
 	   
 	   //Reset input data to the model - optional, but maybe a good idea to clear out any data that might have triggered the exception. 
 	   //Using the TwinCAT analytics logger to cyclically log data over longer periods of time ,could be helpful in tracing the source conditions that lead to a problem..
@@ -79,60 +84,64 @@ THEN
  END_IF
  
  
- 
-//Use with care. This shows how to acsess the internal variables ("DW" data area) of the model.
-//https://infosys.beckhoff.com/content/1033/te1400_tc3_target_matlab/11335783307.html?id=3832417987195186788
-//Might be helpful, if you for example want to re-initialize all internal variables to a know good state.
-
-// ipADI.GetImagePtr(size := , offs := adi_x := , ppData := )
-// Validate the area number "adi_x" , and offset "offs" by adding an instance of the model under TcCOM objects -> "ExceptionGenerator" -> Data Area -> "ExceptionGenerator_DW"
-
-//Read data via ADI Interface
-IF xReadInternalData THEN
-	xReadInternalData:=FALSE;
+{region "ADI Interface - for acsessing internal variables"} 
+	//Use with care. This shows how to acsess the internal variables ("DW" data area) of the model.
+	//https://infosys.beckhoff.com/content/1033/te1400_tc3_target_matlab/11335783307.html?id=3832417987195186788
+	//Might be helpful, if you for example want to re-initialize all internal variables to a know good state.
 	
-	//Get a pointer to the data area
-	hr := fbExceptionGenerator.ipADI.GetImagePtr(size := SIZEOF(stExceptionGeneratorBlockIO), offs := 0, adi_x := 2, ppData := ADR(pStExceptionGeneratorBlockIO));
-	IF hr = 0 THEN
-	   // copy "DW" data area to a local variable
-	   MEMCPY(destAddr:=ADR(stExceptionGeneratorBlockIO),srcAddr:=pStExceptionGeneratorBlockIO,n:=SIZEOF(stExceptionGeneratorBlockIO));
-	   // always release the pointer!
-	   fbExceptionGenerator.ipADI.ReleaseImagePtr(pData := pStExceptionGeneratorBlockIO);
-	END_IF;
+	// ipADI.GetImagePtr(size := , offs := adi_x := , ppData := )
+	// Validate the area number "adi_x" , and offset "offs" by adding an instance of the model under TcCOM objects -> "ExceptionGenerator" -> Data Area -> "ExceptionGenerator_DW"
+	
+	//Read data via ADI Interface
+	IF xReadInternalData THEN
+		xReadInternalData:=FALSE;
 		
-END_IF
-
-
-//Write data via ADI Interface
-IF xWriteInternalData THEN
-	xWriteInternalData:=FALSE;
+		//Get a pointer to the data area
+		hr := fbExceptionGenerator.ipADI.GetImagePtr(size := SIZEOF(stExceptionGeneratorBlockIO), offs := 0, adi_x := 2, ppData := ADR(pStExceptionGeneratorBlockIO));
+		IF hr = 0 THEN
+		   // copy "DW" data area to a local variable
+		   MEMCPY(destAddr:=ADR(stExceptionGeneratorBlockIO),srcAddr:=pStExceptionGeneratorBlockIO,n:=SIZEOF(stExceptionGeneratorBlockIO));
+		   // always release the pointer!
+		   fbExceptionGenerator.ipADI.ReleaseImagePtr(pData := pStExceptionGeneratorBlockIO);
+		END_IF;
+			
+	END_IF
 	
-	//Get a pointer to the data area
-	hr := fbExceptionGenerator.ipADI.GetImagePtr(size := SIZEOF(stExceptionGeneratorBlockIO), offs := 0, adi_x := 2, ppData := ADR(pStExceptionGeneratorBlockIO));
-	IF hr = 0 THEN
-	   //Write local data to dara area "DW" of model
-	   MEMCPY(destAddr:=pStExceptionGeneratorBlockIO,srcAddr:=ADR(stExceptionGeneratorBlockIO),n:=SIZEOF(stExceptionGeneratorBlockIO));
-	   // always release the pointer!
-	   fbExceptionGenerator.ipADI.ReleaseImagePtr(pData := pStExceptionGeneratorBlockIO);
-	END_IF;	
-END_IF
-
-
+	
+	//Write data via ADI Interface
+	IF xWriteInternalData THEN
+		xWriteInternalData:=FALSE;
+		
+		//Get a pointer to the data area
+		hr := fbExceptionGenerator.ipADI.GetImagePtr(size := SIZEOF(stExceptionGeneratorBlockIO), offs := 0, adi_x := 2, ppData := ADR(pStExceptionGeneratorBlockIO));
+		IF hr = 0 THEN
+		   //Write local data to dara area "DW" of model
+		   MEMCPY(destAddr:=pStExceptionGeneratorBlockIO,srcAddr:=ADR(stExceptionGeneratorBlockIO),n:=SIZEOF(stExceptionGeneratorBlockIO));
+		   // always release the pointer!
+		   fbExceptionGenerator.ipADI.ReleaseImagePtr(pData := pStExceptionGeneratorBlockIO);
+		END_IF;	
+	END_IF
+{endregion}
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="295" Count="1" />
-      <LineId Id="248" Count="1" />
-      <LineId Id="49" Count="0" />
+      <LineId Id="295" Count="0" />
+      <LineId Id="401" Count="0" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="404" Count="0" />
+      <LineId Id="400" Count="0" />
       <LineId Id="92" Count="1" />
       <LineId Id="95" Count="0" />
       <LineId Id="94" Count="0" />
-      <LineId Id="218" Count="0" />
+      <LineId Id="417" Count="0" />
       <LineId Id="52" Count="0" />
-      <LineId Id="54" Count="4" />
+      <LineId Id="54" Count="1" />
+      <LineId Id="414" Count="0" />
+      <LineId Id="56" Count="2" />
       <LineId Id="87" Count="0" />
       <LineId Id="91" Count="0" />
       <LineId Id="244" Count="0" />
+      <LineId Id="405" Count="0" />
       <LineId Id="242" Count="0" />
       <LineId Id="212" Count="0" />
       <LineId Id="88" Count="0" />
@@ -170,7 +179,6 @@ END_IF
       <LineId Id="284" Count="5" />
       <LineId Id="283" Count="0" />
       <LineId Id="281" Count="0" />
-      <LineId Id="132" Count="0" />
       <LineId Id="46" Count="0" />
       <LineId Id="45" Count="0" />
     </LineIds>

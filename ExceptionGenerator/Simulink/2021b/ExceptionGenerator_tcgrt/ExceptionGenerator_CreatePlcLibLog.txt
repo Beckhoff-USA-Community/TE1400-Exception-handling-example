@@ -1,5 +1,7 @@
 Repository Tool
 Copyright c 1994-2020 by 3S-Smart Software Solutions GmbH. All rights reserved.
 
-Arguments: --profile="TwinCAT PLC Control" --convertLib "C:\TwinCAT\3.1\Repository\TE140x Module Vendor\ExceptionGenerator\0.0.0.3\ExceptionGenerator.tml" "C:\TwinCAT\3.1\Repository\TE140x Module Vendor\ExceptionGenerator\0.0.0.3\ExceptionGenerator.library"
+Arguments: --profile="TwinCAT PLC Control" --convertLib "C:\TwinCAT\3.1\Repository\TE140x Module Vendor\ExceptionGenerator\0.0.0.6\ExceptionGenerator.tml" "C:\TwinCAT\3.1\Repository\TE140x Module Vendor\ExceptionGenerator\0.0.0.6\ExceptionGenerator.library"
 
+ceptionGenerator\0.0.0.6\ExceptionGenerator.library 
+RepToolLogger Stop: 1 : Finished installing library C:\TwinCAT\3.1\Repository\TE140x Module Vendor\ExceptionGenerator\0.0.0.6\ExceptionGenerator.library 

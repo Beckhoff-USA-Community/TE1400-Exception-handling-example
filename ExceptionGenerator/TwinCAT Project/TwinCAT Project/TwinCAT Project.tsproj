@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.29">
-	<Project ProjectGUID="{F65E9871-7BF1-4589-AFCD-67005DC56DAE}" TargetNetId="41.32.198.2.1.1" Target64Bit="true" ShowHideConfigurations="#x3c7">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.32">
+	<Project ProjectGUID="{F65E9871-7BF1-4589-AFCD-67005DC56DAE}" TargetNetId="5.45.101.36.1.1" Target64Bit="true" ShowHideConfigurations="#x3c7">
 		<System>
-			<Settings MaxCpus="2" NonWinCpus="1" RouterMemory="536870912">
-				<Cpu CpuId="1"/>
+			<Settings MaxCpus="4" NonWinCpus="1" RouterMemory="536870912">
+				<Cpu CpuId="3"/>
 			</Settings>
 			<Licenses>
 				<Target>
@@ -18,7 +18,7 @@
 		</System>
 		<Plc>
 			<Project GUID="{E9EF376A-58A2-4BD6-A5E9-34C7A815EBDB}" Name="PLC" PrjFilePath="PLC\PLC.plcproj" TmcFilePath="PLC\PLC.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PLC\PLC.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PLC\PLC.tmc" TmcHash="{DA46CDB0-7096-0E9B-759E-1AFE263AB88E}">
 					<Name>PLC Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>
@@ -32,6 +32,14 @@
 							<CycleTime>10000000</CycleTime>
 						</Context>
 					</Contexts>
+					<InitSymbols>
+						<InitSymbol>
+							<Name>MAIN.fbExceptionGenerator.eTraceLevelMaxFB</Name>
+							<Type GUID="{8007AE3B-86BB-40F2-B385-EF87FCC239A4}">TcTraceLevel</Type>
+							<AreaNo>#x00000003</AreaNo>
+							<Data>00000000</Data>
+						</InitSymbol>
+					</InitSymbols>
 					<TaskPouOids>
 						<TaskPouOid Prio="20" OTCID="#x08502001"/>
 					</TaskPouOids>

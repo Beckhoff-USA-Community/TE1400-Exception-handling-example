@@ -1,11 +1,11 @@
-<TcModuleClass Hash="{164288B8-C222-46F8-BF39-B1FBCFA9F402}" GeneratedBy="TE140x-TargetForMatlabSimulink 2.3.1.1, MATLAB 9.11.0.1837725 (R2021b) Update 2 (win64)">
+<TcModuleClass Hash="{CF5300CE-D25F-4D84-9E65-11D567E43A71}" GeneratedBy="TE140x-TargetForMatlabSimulink 2.4.1.0, MATLAB 9.11.0.1837725 (R2021b) Update 2 (win64)">
 	<Vendor>
 		<Name>TE140x Module Vendor</Name>
 		<ImageData/>
 	</Vendor>
 	<DataTypes>
 		<DataType>
-			<Name GUID="{FBFD65D3-5B51-29F7-664A-CF48F555967E}">ITcExceptionGenerator</Name>
+			<Name GUID="{2806F198-B249-AEA0-AA4A-5EEEC04F9418}">ITcExceptionGenerator</Name>
 			<BitSize X64="64">32</BitSize>
 			<BaseType GUID="{00000001-0000-0000-E000-000000000064}">ITcUnknown</BaseType>
 			<Method>
@@ -13,6 +13,16 @@
 				<ReturnType GUID="{18071995-0000-0000-0000-000000000019}">HRESULT</ReturnType>
 				<ReturnBitSize>32</ReturnBitSize>
 			</Method>
+			<Properties>
+				<Property>
+					<Name>TcComWrapper_GenerateGetter</Name>
+					<Value>FALSE</Value>
+				</Property>
+				<Property>
+					<Name>TcComWrapper_GenerateMethods</Name>
+					<Value>TRUE</Value>
+				</Property>
+			</Properties>
 		</DataType>
 		<DataType>
 			<Name GUID="{D94EAD20-451D-4AE0-87CC-9A9884043E25}" Namespace="TcMgSdk" CName="TcMgSdk::ModuleCaller">ModuleCaller</Name>
@@ -106,7 +116,7 @@
 			</EnumInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{53CDED75-D12E-408E-B06D-0E50F6A35065}" Namespace="TcMgSdk" CName="TcMgSdk::FpExcptCtrlSet">FpExcptCtrlSet</Name>
+			<Name GUID="{DAC090EE-CC7B-4AD4-8FB6-95BC035207E1}" Namespace="TcMgSdk" CName="TcMgSdk::FpExcptCtrlSet">FpExcptCtrlSet</Name>
 			<BitSize>8</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000002}">USINT</BaseType>
 			<EnumInfo>
@@ -121,7 +131,27 @@
 			</EnumInfo>
 			<EnumInfo>
 				<Text><![CDATA[SuppressExceptions]]></Text>
-				<Enum>12</Enum>
+				<Enum>5</Enum>
+				<Comment><![CDATA[Disable floating point exceptions.]]></Comment>
+			</EnumInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{F26DC700-AACE-4548-857F-B87D9CC2BED8}" Namespace="TcMgSdk" CName="TcMgSdk::FpExcptCtrlSet">FpExcptCtrlSetEx</Name>
+			<BitSize>8</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000002}">USINT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[CallerExceptions]]></Text>
+				<Enum>1</Enum>
+				<Comment><![CDATA[Use the floating point exception settings provided by the caller]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[ThrowExceptions]]></Text>
+				<Enum>3</Enum>
+				<Comment><![CDATA[Enable floating point exceptions on invalid operations and divisions by zero]]></Comment>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[SuppressExceptions]]></Text>
+				<Enum>13</Enum>
 				<Comment><![CDATA[Disable floating point exceptions.]]></Comment>
 			</EnumInfo>
 			<EnumInfo>
@@ -283,7 +313,7 @@
 					<Type GUID="{03000012-0000-0000-E000-000000000064}">ITcADI</Type>
 				</Interface>
 				<Interface>
-					<Type GUID="{FBFD65D3-5B51-29F7-664A-CF48F555967E}">ITcExceptionGenerator</Type>
+					<Type GUID="{2806F198-B249-AEA0-AA4A-5EEEC04F9418}">ITcExceptionGenerator</Type>
 					<ContextId>0</ContextId>
 				</Interface>
 			</Interfaces>
@@ -384,16 +414,16 @@
 				<Parameter HideParameter="true">
 					<Name>InitExceptionHandling</Name>
 					<BitSize>8</BitSize>
-					<BaseType GUID="{53CDED75-D12E-408E-B06D-0E50F6A35065}" Namespace="TcMgSdk">FpExcptCtrlSet</BaseType>
+					<BaseType GUID="{DAC090EE-CC7B-4AD4-8FB6-95BC035207E1}" Namespace="TcMgSdk">FpExcptCtrlSet</BaseType>
 					<Default>
-						<EnumText>LogCatchAndDump</EnumText>
+						<EnumText>CallerExceptions</EnumText>
 					</Default>
 					<PTCID>#x00000008</PTCID>
 				</Parameter>
 				<Parameter HideParameter="true">
 					<Name>UpdateExceptionHandling</Name>
 					<BitSize>8</BitSize>
-					<BaseType GUID="{53CDED75-D12E-408E-B06D-0E50F6A35065}" Namespace="TcMgSdk">FpExcptCtrlSet</BaseType>
+					<BaseType GUID="{F26DC700-AACE-4548-857F-B87D9CC2BED8}" Namespace="TcMgSdk">FpExcptCtrlSetEx</BaseType>
 					<Default>
 						<EnumText>LogCatchAndDump</EnumText>
 					</Default>
@@ -414,29 +444,23 @@
 					</Default>
 					<PTCID>#x0000000b</PTCID>
 				</Parameter>
-				<Parameter OnlineParameter="true" HideParameter="true" CreateSymbol="true" ReadOnly="true">
-					<Name>InitExceptionInfo</Name>
-					<BitSize>1376</BitSize>
-					<BaseType GUID="{241597CD-DFF8-4569-90EE-6B470D7A1D92}" Namespace="TcMgSdk">ExceptionInfo</BaseType>
-					<PTCID>#x0000000c</PTCID>
-				</Parameter>
 				<Parameter OnlineParameter="true" CreateSymbol="true" ReadOnly="true">
 					<Name>CycleCount</Name>
 					<BitSize>64</BitSize>
 					<BaseType GUID="{18071995-0000-0000-0000-00000000000B}">ULINT</BaseType>
-					<PTCID>#x0000000d</PTCID>
+					<PTCID>#x0000000c</PTCID>
 				</Parameter>
 				<Parameter OnlineParameter="true" HideParameter="true" CreateSymbol="true" ReadOnly="true">
 					<Name>ExceptionCount</Name>
 					<BitSize>64</BitSize>
 					<BaseType GUID="{18071995-0000-0000-0000-00000000000B}">ULINT</BaseType>
-					<PTCID>#x0000000e</PTCID>
+					<PTCID>#x0000000d</PTCID>
 				</Parameter>
 				<Parameter OnlineParameter="true" HideParameter="true" CreateSymbol="true" ReadOnly="true">
 					<Name>ExeceptionInfo</Name>
 					<BitSize>1376</BitSize>
 					<BaseType GUID="{241597CD-DFF8-4569-90EE-6B470D7A1D92}" Namespace="TcMgSdk">ExceptionInfo</BaseType>
-					<PTCID>#x0000000f</PTCID>
+					<PTCID>#x0000000e</PTCID>
 				</Parameter>
 			</Parameters>
 			<DataAreas>
@@ -525,7 +549,7 @@
 					<AreaNo AreaType="OutputSrc">3</AreaNo>
 					<Name>ExecutionInfo</Name>
 					<ContextId>0</ContextId>
-					<ByteSize>188</ByteSize>
+					<ByteSize>192</ByteSize>
 					<Symbol>
 						<Name>CycleCount</Name>
 						<BitSize>64</BitSize>
@@ -563,6 +587,6 @@
 	<Configurations/>
 	<Library>
 		<Name>ExceptionGenerator</Name>
-		<Version>0.0.0.3</Version>
+		<Version>0.0.0.6</Version>
 	</Library>
 </TcModuleClass>

@@ -7,9 +7,9 @@
  *
  * Code generation for model "ExceptionGenerator".
  *
- * Model version              : 2.2
+ * Model version              : 2.5
  * Simulink Coder version : 9.6 (R2021b) 14-May-2021
- * C++ source code generated on : Fri Jun  3 09:28:06 2022
+ * C++ source code generated on : Wed Oct  5 15:04:38 2022
  *
  * Target selection: TwinCatGrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping

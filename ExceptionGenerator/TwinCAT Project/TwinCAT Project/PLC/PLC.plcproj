@@ -22,6 +22,7 @@
     </Compile>
     <Compile Include="POUs\F_LogExecutionInfo.TcPOU">
       <SubType>Code</SubType>
+      <ExcludeFromBuild>false</ExcludeFromBuild>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
