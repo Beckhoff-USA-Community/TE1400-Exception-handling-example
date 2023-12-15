@@ -3,7 +3,7 @@ This sample is created by [Beckhoff Automation LLC.](https://www.beckhoff.com/en
 
 This example shows how to catch an exception within a TE1400 generated PLC function block, create a memory dump file, and reset the TcCOM object. 
 TwinCAT continues to run through the exception. 
-Analysis of the exception/memory dump file is done offline using windows debugger.
+Analysis of the exception/memory dump file is done offline using [Windows debugger](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/).
 
 
 ![image](https://user-images.githubusercontent.com/19829308/171736513-46c10c1f-8b97-4aa6-a1e6-087b2e98cd15.png)
