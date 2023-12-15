@@ -1,0 +1,205 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Import Condition="Exists('$(TWINCATSDK)\Sdk.props')" Project="$(TWINCATSDK)\Sdk.props"/>
+	<Import Condition="Exists('$(TWINCATSDK)\MsBuild\TwinCAT Common')" Project="$(TWINCATSDK)\MsBuild\TwinCAT Common\*.targets"/>
+	<ItemGroup Label="ProjectConfigurations">
+		<ProjectConfiguration Include="Debug|TwinCAT RT (x86)">
+			<Configuration>Debug</Configuration>
+			<Platform>TwinCAT RT (x86)</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|TwinCAT RT (x86)">
+			<Configuration>Release</Configuration>
+			<Platform>TwinCAT RT (x86)</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug|TwinCAT RT (x64)">
+			<Configuration>Debug</Configuration>
+			<Platform>TwinCAT RT (x64)</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|TwinCAT RT (x64)">
+			<Configuration>Release</Configuration>
+			<Platform>TwinCAT RT (x64)</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug|TwinCAT OS (x64)">
+			<Configuration>Debug</Configuration>
+			<Platform>TwinCAT OS (x64)</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|TwinCAT OS (x64)">
+			<Configuration>Release</Configuration>
+			<Platform>TwinCAT OS (x64)</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug|TwinCAT UM (x86)">
+			<Configuration>Debug</Configuration>
+			<Platform>TwinCAT UM (x86)</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|TwinCAT UM (x86)">
+			<Configuration>Release</Configuration>
+			<Platform>TwinCAT UM (x86)</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Debug|TwinCAT UM (x64)">
+			<Configuration>Debug</Configuration>
+			<Platform>TwinCAT UM (x64)</Platform>
+		</ProjectConfiguration>
+		<ProjectConfiguration Include="Release|TwinCAT UM (x64)">
+			<Configuration>Release</Configuration>
+			<Platform>TwinCAT UM (x64)</Platform>
+		</ProjectConfiguration>
+	</ItemGroup>
+	<PropertyGroup Label="Globals">
+		<RootNamespace>ExceptionGenerator</RootNamespace>
+		<AutomaticRetargetPlatformVersion>true</AutomaticRetargetPlatformVersion>
+		<TcSignTwinCatCertName>Beckhoff_N.A</TcSignTwinCatCertName>
+		<TcPublishAddFiles>ExceptionGenerator_ModuleInfo.xml;;$(TcPublishAddFiles)</TcPublishAddFiles>
+		<PreferredToolArchitecture>x64</PreferredToolArchitecture>
+		<_IsNativeEnvironment>true</_IsNativeEnvironment>
+		<ProjectGuid>{F09FAD71-F943-4CAF-921E-6E28B83B5E1E}</ProjectGuid>
+	</PropertyGroup>
+	<Import Project="ExceptionGeneratorGlobals.props"/>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+	<PropertyGroup Label="Configuration">
+		<PlatformToolset>v142</PlatformToolset>
+		<TcGeneralUseTmx>true</TcGeneralUseTmx>
+	</PropertyGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+	<ImportGroup Label="ExtensionSettings">
+		<Import Project="$(ModuleGeneratorSdk)\MsBuild\Targets\*.props"/>
+		<Import Project="$(TE140xSdk)\MsBuild\Targets\*.props" Condition="'$(TE140xSdk)'!='$(ModuleGeneratorSdk)'"/>
+		<Import Project="$(TWINCATSDK)\Build\MsBuild\TwinCAT Common\Extensions\*.props" Condition="Exists('$(TWINCATSDK)\Build\MsBuild\TwinCAT Common\Extensions')"/>
+	</ImportGroup>
+	<ImportGroup Label="PropertySheets">
+		<Import Project="$(ModuleGeneratorSdk)\MsBuild\Props\*.props"/>
+		<Import Project="$(TE140xSdk)\MsBuild\Props\*.props" Condition="'$(TE140xSdk)'!='$(ModuleGeneratorSdk)'"/>
+		<Import Project="ExceptionGeneratorArtifacts.props"/>
+	</ImportGroup>
+	<PropertyGroup Label="UserMacros"/>
+	<PropertyGroup>
+		<TcPostPublishCommand>$(TcPostPublishCommand)
+
+echo LibVendor=[LibVendor] &gt; "$(ProjectDir)\ExceptionGenerator_PublishInfo.txt"
+echo LibName=[LibName] &gt;&gt; "$(ProjectDir)\ExceptionGenerator_PublishInfo.txt"
+echo LibVersion=[LibVersion] &gt;&gt; "$(ProjectDir)\ExceptionGenerator_PublishInfo.txt"
+echo Date=[Date] &gt;&gt; "$(ProjectDir)\ExceptionGenerator_PublishInfo.txt"
+echo Time=[Time] &gt;&gt; "$(ProjectDir)\ExceptionGenerator_PublishInfo.txt"
+echo PublishArchiveFile=[PublishArchiveFile] &gt;&gt; "$(ProjectDir)\ExceptionGenerator_PublishInfo.txt"
+echo PublishIntDir=[PublishIntDir] &gt;&gt; "$(ProjectDir)\ExceptionGenerator_PublishInfo.txt"
+echo PublishDstDir=[PublishDstDir] &gt;&gt; "$(ProjectDir)\ExceptionGenerator_PublishInfo.txt"
+</TcPostPublishCommand>
+	</PropertyGroup>
+	<ItemDefinitionGroup>
+		<ClCompile>
+			<AdditionalIncludeDirectories Condition="$(Platform.StartsWith('TwinCAT RT'))">$(ProjectDir)\TwinCAT RT\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories Condition="$(Platform.StartsWith('TwinCAT OS'))">$(ProjectDir)\TwinCAT OS\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories Condition="$(Platform.StartsWith('TwinCAT UM'))">$(ProjectDir)\TwinCAT UM\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories Condition="$(Platform.StartsWith('TwinCAT CE'))">$(ProjectDir)\TwinCAT CE\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PreprocessorDefinitions>TCMATH_BLOCK_STANDARDLIB=0;TC_BUILD_MIN=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<PreprocessorDefinitions>TcDrvVersioned;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+		</ClCompile>
+		<Link>
+			<AdditionalDependencies>TcMgFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalDependencies>TcMgFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalDependencies>TcMgFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalDependencies>TcMgFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalDependencies>TcMgFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+		</Link>
+	</ItemDefinitionGroup>
+	<ItemGroup>
+		<ClInclude Include="TcPch.h"/>
+		<ClInclude Include="ExceptionGeneratorServices.h"/>
+		<ClInclude Include="ExceptionGeneratorDuts.h"/>
+		<ClInclude Include="ExceptionGeneratorInterfaces.h"/>
+		<ClInclude Include="ExceptionGeneratorClassFactory.h"/>
+		<ClInclude Include="ExceptionGeneratorDrv.h"/>
+		<ClInclude Include="ExceptionGeneratorCtrl.h"/>
+		<ClInclude Include="ExceptionGeneratorW32.h"/>
+		<ClInclude Include="ExceptionGeneratorW32Resource.h"/>
+		<ClInclude Include="TcComExceptionGenerator.h"/>
+		<ClInclude Include="FbExceptionGenerator.h"/>
+		<ClInclude Include="ExceptionGeneratorInternal.h"/>
+		<ClInclude Include="FbTcComExceptionGenerator.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtGetInf.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtGetNaN.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rt_nonfinite.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\ExceptionGenerator.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\ExceptionGenerator_private.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\ExceptionGenerator_types.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\multiword_types.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtmodel.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtwtypes.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_MATLAB_ROOT)\simulink\include\rtw_continuous.h"/>
+		<ClInclude Include="$(Simulink_ExceptionGenerator_MATLAB_ROOT)\simulink\include\rtw_solver.h"/>
+	</ItemGroup>
+	<ItemGroup>
+		<ClCompile Include="TcPch.cpp">
+			<PrecompiledHeader>Create</PrecompiledHeader>
+		</ClCompile>
+		<ClCompile Include="ExceptionGeneratorClassFactory.cpp"/>
+		<ClCompile Include="ExceptionGeneratorDrv.cpp">
+			<ExcludedFromBuild Condition="!$(Platform.StartsWith('TwinCAT RT'))">true</ExcludedFromBuild>
+		</ClCompile>
+		<ClCompile Include="ExceptionGeneratorModulesMain.cpp">
+			<ExcludedFromBuild Condition="!$(Platform.StartsWith('TwinCAT OS'))">true</ExcludedFromBuild>
+		</ClCompile>
+		<ClCompile Include="ExceptionGeneratorCtrl.cpp">
+			<ExcludedFromBuild Condition="!$(Platform.StartsWith('TwinCAT UM'))">true</ExcludedFromBuild>
+		</ClCompile>
+		<ClCompile Include="ExceptionGeneratorW32.cpp">
+			<ExcludedFromBuild Condition="!$(Platform.StartsWith('TwinCAT UM'))">true</ExcludedFromBuild>
+		</ClCompile>
+		<ClCompile Include="TcComExceptionGenerator.cpp">
+			<PreprocessorDefinitions>$(Simulink_ExceptionGenerator_Definitions)%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<AdditionalIncludeDirectories>$(Simulink_ExceptionGenerator_IncludeDir)%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+		</ClCompile>
+		<ClCompile Include="FbExceptionGenerator.cpp">
+			<PreprocessorDefinitions>$(Simulink_ExceptionGenerator_Definitions)%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<AdditionalIncludeDirectories>$(Simulink_ExceptionGenerator_IncludeDir)%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+		</ClCompile>
+		<ClCompile Include="FbTcComExceptionGenerator.cpp"/>
+		<ClCompile Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\ExceptionGenerator.cpp">
+			<PreprocessorDefinitions>$(Simulink_ExceptionGenerator_Definitions)%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<AdditionalIncludeDirectories>$(Simulink_ExceptionGenerator_IncludeDir)%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+		</ClCompile>
+		<ClCompile Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtGetInf.cpp">
+			<PreprocessorDefinitions>$(Simulink_ExceptionGenerator_Definitions)%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<AdditionalIncludeDirectories>$(Simulink_ExceptionGenerator_IncludeDir)%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+		</ClCompile>
+		<ClCompile Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rtGetNaN.cpp">
+			<PreprocessorDefinitions>$(Simulink_ExceptionGenerator_Definitions)%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<AdditionalIncludeDirectories>$(Simulink_ExceptionGenerator_IncludeDir)%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+		</ClCompile>
+		<ClCompile Include="$(Simulink_ExceptionGenerator_START_DIR)\ExceptionGenerator_tcgrt\rt_nonfinite.cpp">
+			<PreprocessorDefinitions>$(Simulink_ExceptionGenerator_Definitions)%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<AdditionalIncludeDirectories>$(Simulink_ExceptionGenerator_IncludeDir)%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+		</ClCompile>
+		<ClCompile Include="$(Simulink_ExceptionGenerator_MATLAB_ROOT)\rtw\c\src\common\rt_cppclass_main.cpp">
+			<PreprocessorDefinitions>$(Simulink_ExceptionGenerator_Definitions)%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<AdditionalIncludeDirectories>$(Simulink_ExceptionGenerator_IncludeDir)%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+			<ExcludedFromBuild>true</ExcludedFromBuild>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="ExceptionGeneratorW32.rc">
+			<ExcludedFromBuild Condition="!$(Platform.StartsWith('TwinCAT UM'))">true</ExcludedFromBuild>
+		</ResourceCompile>
+		<ResourceCompile Include="ExceptionGenerator.rc"/>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="ExceptionGeneratorGlobals.props"/>
+		<None Include="ExceptionGeneratorArtifacts.props"/>
+		<None Include="ExceptionGeneratorW32.def">
+			<ExcludedFromBuild Condition="!$(Platform.StartsWith('TwinCAT UM'))">true</ExcludedFromBuild>
+		</None>
+		<None Include="ExceptionGenerator_ModuleInfo.xml"/>
+		<None Include="ExceptionGenerator.libcat.xml"/>
+		<None Include="ExceptionGenerator.tmc"/>
+		<None Include="ExceptionGenerator.tml"/>
+	</ItemGroup>
+	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+	<ImportGroup Label="ExtensionTargets">
+		<Import Project="$(ModuleGeneratorSdk)\MsBuild\Targets\*.targets"/>
+		<Import Project="$(TE140xSdk)\MsBuild\Targets\*.targets" Condition="'$(TE140xSdk)'!='$(ModuleGeneratorSdk)'"/>
+		<Import Project="$(TWINCATSDK)\Build\MsBuild\TwinCAT Common\Extensions\*.targets" Condition="Exists('$(TWINCATSDK)\Build\MsBuild\TwinCAT Common\Extensions')"/>
+	</ImportGroup>
+</Project>

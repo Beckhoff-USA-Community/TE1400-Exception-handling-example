@@ -1,0 +1,8 @@
+LibVendor=TE140x Module Vendor 
+LibName=ExceptionGenerator 
+LibVersion=0.0.0.1 
+Date=2023-12-15 
+Time=095319 
+PublishArchiveFile= 
+PublishIntDir=C:\Users\MattK\source\repos\TE1400-Exception-handling-example\ExceptionGenerator\Simulink\2023b\ExceptionGenerator_tcgrt\_products\TcPublish\TE140x Module Vendor\ExceptionGenerator\0.0.0.1 
+PublishDstDir=C:\TwinCAT\3.1\Repository\TE140x Module Vendor\ExceptionGenerator\0.0.0.1 

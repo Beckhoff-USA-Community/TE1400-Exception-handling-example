@@ -1,0 +1,7 @@
+<?xml version = "1.0" encoding = "utf-8" ?>
+<Project ToolsVersion = "4.0" xmlns = "http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup> <!-- Global -->
+		<ModuleGeneratorSdk Condition="'$(ModuleGeneratorSdk)'==''">C:\TwinCAT\Functions\TE14xx-ToolsForMatlabAndSimulink\TE140x\SDK</ModuleGeneratorSdk>
+		<TE140xSdk Condition="'$(TE140xSdk)'==''">$(ModuleGeneratorSdk)</TE140xSdk>
+	</PropertyGroup>
+</Project>
